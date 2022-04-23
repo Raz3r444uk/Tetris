@@ -16,6 +16,25 @@ export class Controller {
   start() {
     this.view.showArea(this.game.viewArea);
 
+    this.game.createUpdatePanels(
+      this.view.createBlockScore(),
+      this.view.createBlockNextTetromino()
+    );
+
+    const tick = () => {
+      const time = 1100 - 100 * this.game.lvl;
+      if (this.game.gameOver) return;
+      setTimeout(
+        () => {
+          this.game.moveDown();
+          this.view.showArea(this.game.viewArea);
+          tick();
+        },
+        time > 100 ? time : 100
+      );
+    };
+    tick();
+
     setInterval(() => {
       this.game.moveDown();
       this.view.showArea(this.game.viewArea);
